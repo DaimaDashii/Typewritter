@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typewriter Effect with Multiple Texts</title>
+    <style>
+        #typewriter {
+            font-family: monospace;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid;
+            width: fit-content;
+            animation: blink-caret 0.7s step-end infinite;
+            color: darkgreen;
+        }
+
+        @keyframes blink-caret {
+            from, to {
+                border-color: transparent;
+            }
+            50% {
+                border-color: black;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="typewriter"></div>
+
+    <script>
+        const texts = ["Im Indra Ibnu Pratama.", "Seorang Web Developer.", "dan, Saya suka nonton donghua."];
+        let currentTextIndex = 0;
+        let currentIndex = 0;
+        let isDeleting = false;
+
+        function type() {
+            const currentText = texts[currentTextIndex];
+            const element = document.getElementById('typewriter');
+
+            if (isDeleting) {
+                element.innerHTML = currentText.substring(0, currentIndex - 1);
+                currentIndex--;
+            } else {
+                element.innerHTML = currentText.substring(0, currentIndex + 1);
+                currentIndex++;
+            }
+
+            if (!isDeleting && currentIndex === currentText.length) {
+                setTimeout(() => isDeleting = true, 1000); // Jeda sebelum kehapus
+            } else if (isDeleting && currentIndex === 0) {
+                isDeleting = false;
+                currentTextIndex = (currentTextIndex + 1) % texts.length; // Ganti ke teks berikutnya
+            }
+
+            setTimeout(type, isDeleting ? 50 : 100); // Sesuaikan kecepatan pengetikan dan penghapusan
+        }
+
+        type();
+    </script>
+</body>
+</html>
